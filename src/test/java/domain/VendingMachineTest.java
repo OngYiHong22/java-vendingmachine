@@ -94,7 +94,7 @@ class VendingMachineTest {
     @Test
     void get_change_amount_lock() {
         VendingMachine vendingMachine = new VendingMachine(3000);
-        vendingMachine.addDrinks("[콜라,1,1500]");
+        vendingMachine.addDrinks("[콜라 , 1, 1500]");
         vendingMachine.findDrink("콜라").minusCount();
         if(vendingMachine.isBuy(2000)) {
             vendingMachine.buyDrink(vendingMachine.findDrink("콜라"), 2000);
