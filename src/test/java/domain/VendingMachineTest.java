@@ -24,7 +24,7 @@ class VendingMachineTest {
     @Test
     void set_drinks(){
         VendingMachine vendingMachine = new VendingMachine(450);
-        vendingMachine.addDrinks("[콜라,20,1500];[사이다,10,1000]");
+        vendingMachine.addDrinks("[콜라, 20, 1500];[사이다, 10, 1000]");
         assertThat(vendingMachine.getDrinks()).contains(new Drink("콜라", 20, 1500));
         assertThat(vendingMachine.getDrinks()).contains(new Drink("사이다", 10, 1000));
     }
@@ -45,7 +45,7 @@ class VendingMachineTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @ValueSource(strings = {"[콜라,20,1500];[콜라,10,1000]"})
+    @ValueSource(strings = {"[콜라, 20, 1500];[콜라, 10, 1000]"})
     @ParameterizedTest
     void fail_set_drinks_by_duplicated(final String drinksStr) {
         VendingMachine vendingMachine = new VendingMachine(450);
@@ -56,7 +56,7 @@ class VendingMachineTest {
     @Test
     void buy_drink() {
         VendingMachine vendingMachine = new VendingMachine(450);
-        vendingMachine.addDrinks("[콜라,20,1500];[사이다,10,1000]");
+        vendingMachine.addDrinks("[콜라, 20, 1500];[사이다, 10, 1000]");
         int changes = vendingMachine.buyDrink(vendingMachine.findDrink("콜라"), 3000);
         Drink drink = vendingMachine.findDrink("콜라");
         assertThat(drink.getCount()).isEqualTo(19);
@@ -67,14 +67,14 @@ class VendingMachineTest {
     @ParameterizedTest
     void fail_buy_drink_by_lack_of_money(int money) {
         VendingMachine vendingMachine = new VendingMachine(450);
-        vendingMachine.addDrinks("[콜라,20,1500]");
+        vendingMachine.addDrinks("[콜라, 20, 1500]");
         assertThat(vendingMachine.isBuy(money)).isNotEqualTo(true);
     }
 
     @Test
     void fail_buy_drink_by_lack_of_count() {
         VendingMachine vendingMachine = new VendingMachine(450);
-        vendingMachine.addDrinks("[콜라,1,1500]");
+        vendingMachine.addDrinks("[콜라, 1, 1500]");
         vendingMachine.findDrink("콜라").minusCount();
         assertThat(vendingMachine.isBuy(3000)).isNotEqualTo(true);
     }
@@ -82,7 +82,7 @@ class VendingMachineTest {
     @Test
     void get_change() {
         VendingMachine vendingMachine = new VendingMachine(800);
-        vendingMachine.addDrinks("[콜라,20,1500]");
+        vendingMachine.addDrinks("[콜라, 20, 1500]");
         Map<Coin, Integer> changesCoins = vendingMachine.returnOfChange(vendingMachine.buyDrink(vendingMachine.findDrink("콜라"), 2000));
         Map<Coin, Integer> remainingCoins = vendingMachine.getCoins();
         assertThat(2000 - 1500).isEqualTo(changesCoins.keySet().stream()
@@ -94,7 +94,7 @@ class VendingMachineTest {
     @Test
     void get_change_amount_lock() {
         VendingMachine vendingMachine = new VendingMachine(3000);
-        vendingMachine.addDrinks("[콜라,1,1500]");
+        vendingMachine.addDrinks("[콜라, 1, 1500]");
         vendingMachine.findDrink("콜라").minusCount();
         if(vendingMachine.isBuy(2000)) {
             vendingMachine.buyDrink(vendingMachine.findDrink("콜라"), 2000);
@@ -110,7 +110,7 @@ class VendingMachineTest {
     @Test
     void get_change_coin_lack() {
         VendingMachine vendingMachine = new VendingMachine(300);
-        vendingMachine.addDrinks("[콜라,20,1500]");
+        vendingMachine.addDrinks("[콜라, 20, 1500]");
         Map<Coin, Integer> changesCoins = vendingMachine.returnOfChange(vendingMachine.buyDrink(vendingMachine.findDrink("콜라"), 2000));
         Map<Coin, Integer> remainingCoins = vendingMachine.getCoins();
         assertThat(300).isEqualTo(changesCoins.keySet().stream()
